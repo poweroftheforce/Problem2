@@ -28,6 +28,29 @@
   color: #61dafb;
 }
 
+.container {
+  max-width: 600px;
+}
+
+.button {
+  align-items: center;
+  background-color: #ccc;
+  border-right: 1px solid black;
+  cursor: pointer;
+  display: flex;
+  height: 60px;
+  text-decoration: none;
+
+  &:last-child {
+    border-right: 0;
+  }
+  
+  div {
+    text-align: center;
+    width: 100%;
+  }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
