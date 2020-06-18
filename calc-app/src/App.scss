@@ -71,6 +71,10 @@ $border-color: black;
   &.function {
     background-color: #f38b09;
     color: white;
+
+    &.multiply > div {
+      transform: rotate(45deg);
+    }
   }
 
   &:last-child {

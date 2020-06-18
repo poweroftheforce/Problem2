@@ -1,11 +1,10 @@
 import React from 'react';
 
 function Button(props) {
-  console.log(props);
   return (
-    <div className={'button col-' + props.size + (props.classNames && props.classNames.length ? ' ' + props.classNames.join(' ') : '')} onClick={props.handler}>
+    <div className={'button col-' + props.size + (props.classNames && props.classNames.length ? ' ' + props.classNames.join(' ') : '')} onClick={props.handler} data-value={props.value}>
       <div>
-        {props.value}
+        {props.text ? props.text : props.value}
       </div>
     </div>
   );
