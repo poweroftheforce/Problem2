@@ -6,36 +6,71 @@ import * as math from 'mathjs';
 
 function App() {
   const [display, setDisplay] = useState('0');
+  const [total, setTotal] = useState('0');
+  const [calculating, setCalculating] = useState(false);
 
   function buttonPressed(e) {
     e.preventDefault();
 
     let char = e.currentTarget.dataset.value;
 
+    // digits and decimal
     if (/[0-9]+/.test(char)) {
+      console.log('set digits');
       setDisplay(display !== '0' ? display + char : char);
+      setTotal(total !== '0' ? total + char : char);
+
+      if (calculating) {
+        console.log('calc===false', calculating)
+        setDisplay(char);
+        setCalculating(false);
+      }
     }
 
+    // decimal
+    if (char === '.' && display.indexOf('.') === -1) {
+      console.log('set decimal');
+      setDisplay(display !== '0' ? display + char : char);
+      setTotal(total !== '0' ? total + char : char);
+    }
+
+    // math functions
     if (/[\+\-\*\/]/.test(char) && display.toString().slice(-1) !== char) {
-      setDisplay(display + char);
+      console.log('math funcs');
+      setTotal(total + char);
+      setDisplay(math.evaluate(total));
+      setCalculating(true);
     }
 
-    if (char === 'AC') {
-      setDisplay('0');
-    }
-
+    // btn neg/pos
     if (char === 'neg') {
       setDisplay(display * -1);
+      setTotal(total * -1);
     }
 
+    // btn percent
     if (char === '%') {
       let num = parseInt(display) / 100;
+      let tnum = parseInt(total) / 100;
+
       setDisplay(num.toString());
+      setTotal(tnum.toString());
     }
+
+    // btn clear
+    if (char === 'AC') {
+      setDisplay('0');
+      setTotal('0');
+    }
+
+    console.log(total);
   }
 
   function handleEquals() {
-    setDisplay(math.evaluate(display));
+    if (!/[\+\-\*\/]/.test(display.toString().slice(-1))) {
+      setDisplay(math.evaluate(total));
+      setTotal(math.evaluate(total));
+    }
   }
 
   return (
@@ -43,6 +78,7 @@ function App() {
       <div className="container">
         <div className="row">
           <div className="display col-12">{display}</div>
+          <div className="eval-line col-12">{total}</div>
         </div>
         <div className="row">
           <Button size="3" value="AC" classNames={['special']} handler={buttonPressed}></Button>
