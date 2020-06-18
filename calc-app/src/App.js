@@ -9,35 +9,27 @@ function App() {
 
   function buttonPressed(e) {
     e.preventDefault();
-    // console.log('button pressed');
 
-    // console.log(e.target.attributes.getNamedItem('data-value'), e.currentTarget.dataset);
     let char = e.currentTarget.dataset.value;
-    console.log('char', char);
 
     if (/[0-9]+/.test(char)) {
-      console.log('char set');
       setDisplay(display !== '0' ? display + char : char);
     }
 
     if (/[\+\-\*\/]/.test(char) && display.toString().slice(-1) !== char) {
-      console.log('op set');
       setDisplay(display + char);
     }
 
     if (char === 'AC') {
-      console.log('setting AC');
       setDisplay('0');
     }
 
     if (char === 'neg') {
-      console.log('setting neg');
       setDisplay(display * -1);
     }
 
     if (char === '%') {
       let num = parseInt(display) / 100;
-      console.log('percent set', num);
       setDisplay(num.toString());
     }
   }
