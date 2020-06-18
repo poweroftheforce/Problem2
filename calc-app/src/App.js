@@ -19,33 +19,33 @@ function App() {
           <Display value="display"></Display>
         </div>
         <div className="row">
-          <div className="col-3">AC</div>
-          <div className="col-3">+/-</div>
-          <div className="col-3">%</div>
-          <div className="col-3">&#xF7;</div>
+          <Button size="3" value="AC" classNames={['special']} handler={digitPressed}></Button>
+          <Button size="3" value="+/-" classNames={['special']} handler={digitPressed}></Button>
+          <Button size="3" value="%" classNames={['special']} handler={digitPressed}></Button>
+          <Button size="3" value="&#xF7;" classNames={['function']} handler={digitPressed}></Button>
         </div>
         <div className="row justify-content-center align-self-center">
           <Button size="3" value="7" handler={digitPressed}></Button>
           <Button size="3" value="8" handler={digitPressed}></Button>
           <Button size="3" value="9" handler={digitPressed}></Button>
-          <Button size="3" value="*" handler={digitPressed}></Button>
+          <Button size="3" value="*" classNames={['function']} handler={digitPressed}></Button>
         </div>
         <div className="row">
-          <div className="col-3">4</div>
-          <div className="col-3">5</div>
-          <div className="col-3">6</div>
-          <div className="col-3">-</div>
+          <Button size="3" value="4" handler={digitPressed}></Button>
+          <Button size="3" value="5" handler={digitPressed}></Button>
+          <Button size="3" value="6" handler={digitPressed}></Button>
+          <Button size="3" value="-" classNames={['function']} handler={digitPressed}></Button>
         </div>
         <div className="row">
-          <div className="col-3">1</div>
-          <div className="col-3">2</div>
-          <div className="col-3">3</div>
-          <div className="col-3">+</div>
+          <Button size="3" value="1" handler={digitPressed}></Button>
+          <Button size="3" value="2" handler={digitPressed}></Button>
+          <Button size="3" value="3" handler={digitPressed}></Button>
+          <Button size="3" value="+" classNames={['function']} handler={digitPressed}></Button>
         </div>
         <div className="row">
-          <div className="col-6">0</div>
-          <div className="col-3">.</div>
-          <div className="col-3">=</div>
+          <Button size="6" value="0" handler={digitPressed}></Button>
+          <Button size="3" value="." handler={digitPressed}></Button>
+          <Button size="3" value="=" classNames={['function']} handler={digitPressed}></Button>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ function Display(props) {
 
   console.log(props);
   return (
-    <div className={'col-' + props.size}>{count}</div>
+    <div className={'display col-' + props.size}>{count}</div>
   );
 }
 
