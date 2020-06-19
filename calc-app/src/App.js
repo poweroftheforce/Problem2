@@ -58,7 +58,6 @@ function App() {
 
   function handleDigits(digit) {
     setDisplay(display !== '0' ? display + digit : digit);
-    // setTotal(total !== '0' ? total + digit : digit);
 
     if (calculating) {
       setDisplay(digit);
@@ -74,7 +73,6 @@ function App() {
 
   function handleDecimal() {
     setDisplay(display !== '0' ? display + '.' : '.');
-    setTotal(total !== '0' ? total + '.' : '.');
   }
 
   // handle operation (+, -, *, /)
