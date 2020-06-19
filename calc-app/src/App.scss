@@ -12,6 +12,14 @@ $button-color: black;
 
   .row {
     border-bottom: 1px solid $border-color;
+
+    &> div {
+      padding: 0;
+
+      &:last-child .button {
+        border-right: 0;
+      }
+    }
   
     &:last-child {
       border: 0;
@@ -38,6 +46,7 @@ $button-color: black;
     display: flex;
     height: 80px;
     text-decoration: none;
+    width: 100%;
   
     &.special {
       background-color: #aaa;
@@ -48,18 +57,54 @@ $button-color: black;
       background-color: #f38b09;
       color: white;
   
-      &.multiply > div {
+      &.multiply > p {
         transform: rotate(45deg);
       }
     }
-  
-    &:last-child {
-      border-right: 0;
-    }
     
-    div {
+    p {
       text-align: center;
       width: 100%;
+    }
+  }
+
+  &.new {
+    max-width: 250px;
+
+    .row {
+      &> div {
+        padding: 2px;
+
+        &.display {
+          font-size: 48px;
+          font-weight: 400;
+        }
+      }
+    }
+
+    .button {
+      background-color: #999;
+      border-radius: 30px;
+      color: white;
+      font-size: 24px;
+      font-weight: 300;
+      height: 60px;
+
+      &.special {
+        background-color: #ccc;
+        color: black;
+      }
+
+      &.function {
+        background-color: #ffa73a;
+        color: white;
+        font-size: 36px;
+        font-weight: 300;
+      }
+
+      p {
+        margin: 0;
+      }
     }
   }
 }
