@@ -11,7 +11,6 @@ function App() {
   const [calculating, setCalculating] = useState(false);
   const [equated, setEquated] = useState(false);
   const DIGITS = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
-  const SHIFT = 16;
   const ENTER = 13;
   const PERCENT = 53;
   const MULTIPLY = 56;
@@ -59,7 +58,7 @@ function App() {
 
   function handleDigits(digit) {
     setDisplay(display !== '0' ? display + digit : digit);
-    setTotal(total !== '0' ? total + digit : digit);
+    // setTotal(total !== '0' ? total + digit : digit);
 
     if (calculating) {
       setDisplay(digit);
@@ -80,8 +79,10 @@ function App() {
 
   // handle operation (+, -, *, /)
   function handleOperation(func) {
-    setTotal(total + func);
-    setDisplay(math.evaluate(total));
+    let sum = display + func;
+
+    setTotal(sum);
+    // setDisplay(math.evaluate(sum));
     setCalculating(true);
     setEquated(false);
   }
@@ -98,19 +99,23 @@ function App() {
     e.preventDefault();
 
     let char = e.currentTarget.dataset.value;
+    let text = e.target.innerText;
+    let btnClear = document.querySelector('#btn-clear p');
 
     // digits
     if (/[0-9]+/.test(char)) {
       handleDigits(char);
+      btnClear.innerText = 'C';
     }
 
     // decimal
     if (char === '.' && display.indexOf('.') === -1) {
       handleDecimal();
+      btnClear.innerText = 'C';
     }
 
     // math functions
-    if (/[\+\-\*\/]/.test(char) && display.toString().slice(-1) !== char) {
+    if (/[\+\-\*\/]/.test(char)) {
       handleOperation(char);
     }
 
@@ -127,15 +132,22 @@ function App() {
 
     // btn clear
     if (char === 'AC') {
-      setDisplay('0');
-      setTotal('0');
+      if (text === 'C') {
+        setDisplay('0');
+        btnClear.innerText = 'AC';
+      } else {
+        setDisplay('0');
+        setTotal('0');
+      }
     }
   }
 
   function handleEquals() {
     if (!/[\+\-\*\/]/.test(display.toString().slice(-1))) {
-      setDisplay(math.evaluate(total));
-      setTotal(math.evaluate(total));
+      let sum = math.evaluate(total + display);
+
+      setTotal(sum);
+      setDisplay(sum);
       setEquated(true);
     }
   }
@@ -150,7 +162,7 @@ function App() {
           <div className="eval-line col-12">{total}</div>
         </div>
         <div className="row">
-          <Button size="3" value="AC" classNames={['special']} handler={buttonPressed}></Button>
+          <Button size="3" value="AC" id="btn-clear" classNames={['special']} handler={buttonPressed}></Button>
           <Button size="3" value="neg" text="+/-" classNames={['special']} handler={buttonPressed}></Button>
           <Button size="3" value="%" classNames={['special']} handler={buttonPressed}></Button>
           <Button size="3" value="/" text="&#xF7;" classNames={['function']} handler={buttonPressed}></Button>
