@@ -9,6 +9,7 @@ function App() {
   const [display, setDisplay] = useState('0');
   const [total, setTotal] = useState('0');
   const [calculating, setCalculating] = useState(false);
+  const [equated, setEquated] = useState(false);
   const DIGITS = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
   const SHIFT = 16;
   const ENTER = 13;
@@ -20,7 +21,6 @@ function App() {
   const DIVIDE = 191;
   const handleKeydown = useCallback(
     (e) => {
-      // console.log(e.keyCode);
       if (DIGITS.includes(e.keyCode)) {
         handleDigits(DIGITS.indexOf(e.keyCode).toString());
       }
@@ -65,6 +65,12 @@ function App() {
       setDisplay(digit);
       setCalculating(false);
     }
+
+    if (equated) {
+      setDisplay(digit);
+      setTotal(digit);
+      setEquated(false);
+    }
   }
 
   function handleDecimal() {
@@ -77,6 +83,7 @@ function App() {
     setTotal(total + func);
     setDisplay(math.evaluate(total));
     setCalculating(true);
+    setEquated(false);
   }
 
   function handlePercent() {
@@ -129,6 +136,7 @@ function App() {
     if (!/[\+\-\*\/]/.test(display.toString().slice(-1))) {
       setDisplay(math.evaluate(total));
       setTotal(math.evaluate(total));
+      setEquated(true);
     }
   }
 
