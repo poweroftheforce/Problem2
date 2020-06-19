@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import useEventListener from './event-listener';
 import Button from './components/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
@@ -8,38 +9,102 @@ function App() {
   const [display, setDisplay] = useState('0');
   const [total, setTotal] = useState('0');
   const [calculating, setCalculating] = useState(false);
+  const DIGITS = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
+  const SHIFT = 16;
+  const ENTER = 13;
+  const PERCENT = 53;
+  const MULTIPLY = 56;
+  const EQUALS = 187;
+  const MINUS = 189;
+  const DECIMAL = 190;
+  const DIVIDE = 191;
+  const handleKeydown = useCallback(
+    (e) => {
+      // console.log(e.keyCode);
+      if (DIGITS.includes(e.keyCode)) {
+        handleDigits(DIGITS.indexOf(e.keyCode).toString());
+      }
+
+      if (e.keyCode === DECIMAL) {
+        handleDecimal();
+      }
+
+      if (e.keyCode === MINUS) {
+        handleOperation('-');
+      }
+
+      if (e.keyCode === DIVIDE) {
+        handleOperation('/');
+      }
+
+      if (e.shiftKey && e.keyCode === PERCENT) {
+        handlePercent();
+      }
+
+      if (e.shiftKey && e.keyCode === MULTIPLY) {
+        handleOperation('*');
+      }
+
+      if (e.shiftKey && e.keyCode === EQUALS) {
+        handleOperation('+');
+      } else if (e.keyCode == EQUALS) {
+        handleEquals();
+      }
+
+      if (e.keyCode === ENTER) {
+        handleEquals();
+      }
+    }
+  );
+
+  function handleDigits(digit) {
+    setDisplay(display !== '0' ? display + digit : digit);
+    setTotal(total !== '0' ? total + digit : digit);
+
+    if (calculating) {
+      setDisplay(digit);
+      setCalculating(false);
+    }
+  }
+
+  function handleDecimal() {
+    setDisplay(display !== '0' ? display + '.' : '.');
+    setTotal(total !== '0' ? total + '.' : '.');
+  }
+
+  // handle operation (+, -, *, /)
+  function handleOperation(func) {
+    setTotal(total + func);
+    setDisplay(math.evaluate(total));
+    setCalculating(true);
+  }
+
+  function handlePercent() {
+    let num = parseInt(display) / 100;
+    let tnum = parseInt(total) / 100;
+
+    setDisplay(num.toString());
+    setTotal(tnum.toString());
+  }
 
   function buttonPressed(e) {
     e.preventDefault();
 
     let char = e.currentTarget.dataset.value;
 
-    // digits and decimal
+    // digits
     if (/[0-9]+/.test(char)) {
-      console.log('set digits');
-      setDisplay(display !== '0' ? display + char : char);
-      setTotal(total !== '0' ? total + char : char);
-
-      if (calculating) {
-        console.log('calc===false', calculating)
-        setDisplay(char);
-        setCalculating(false);
-      }
+      handleDigits(char);
     }
 
     // decimal
     if (char === '.' && display.indexOf('.') === -1) {
-      console.log('set decimal');
-      setDisplay(display !== '0' ? display + char : char);
-      setTotal(total !== '0' ? total + char : char);
+      handleDecimal();
     }
 
     // math functions
     if (/[\+\-\*\/]/.test(char) && display.toString().slice(-1) !== char) {
-      console.log('math funcs');
-      setTotal(total + char);
-      setDisplay(math.evaluate(total));
-      setCalculating(true);
+      handleOperation(char);
     }
 
     // btn neg/pos
@@ -50,11 +115,7 @@ function App() {
 
     // btn percent
     if (char === '%') {
-      let num = parseInt(display) / 100;
-      let tnum = parseInt(total) / 100;
-
-      setDisplay(num.toString());
-      setTotal(tnum.toString());
+      handlePercent();
     }
 
     // btn clear
@@ -62,8 +123,6 @@ function App() {
       setDisplay('0');
       setTotal('0');
     }
-
-    console.log(total);
   }
 
   function handleEquals() {
@@ -73,9 +132,11 @@ function App() {
     }
   }
 
+  useEventListener('keydown', handleKeydown);
+
   return (
     <div className="App">
-      <div className="container">
+      <div className="container new">
         <div className="row">
           <div className="display col-12">{display}</div>
           <div className="eval-line col-12">{total}</div>
